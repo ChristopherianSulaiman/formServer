@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Autofill Google Form</title>
+    <script src="https://www.linkedin.com/autofill/js/autofill.js" type="text/javascript" async></script>
+</head>
+<body>
+    <h1>Senior Applicant Form</h1>
+    
+    <!-- Embed the Google Form -->
+    <iframe id="googleFormFrame" src="https://docs.google.com/forms/d/e/1FAIpQLSclnMP_PVlMMtLrh_-z8hYVEx7tf3fClyYc2rE8HcPdb7YytA/viewform?embedded=true" width="640" height="3882" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+
+    <!-- LinkedIn AutoFill Script -->
+    <script type="IN/Form2"
+        data-form="googleForm"
+        data-field-firstname="firstnameFieldId"
+        data-field-lastname="lastnameFieldId"
+        data-field-phone="phoneFieldId"
+        data-field-email="emailFieldId"
+        data-field-company="companyFieldId"
+        data-field-title="titleFieldId"
+        data-field-city="cityFieldId"
+        data-field-state="stateFieldId"
+        data-field-country="countryFieldId"
+        data-field-zip="zipFieldId">
+    </script>
+
+    <script>
+        // Adjust these IDs based on your form's field IDs
+        const fieldMapping = {
+            'firstnameFieldId': 'entry.2040390134', // Replace with actual field ID from your Google Form
+            'lastnameFieldId': 'entry.751070818', // Replace with actual field ID from your Google Form
+            'phoneFieldId': 'entry.75719352', // Replace with actual field ID from your Google Form
+            'emailFieldId': 'entry.1334512619', // Replace with actual field ID from your Google Form
+            'companyFieldId': 'entry.483036053_sentinel', // Replace with actual field ID from your Google Form
+            'titleFieldId': 'entry.253197169_sentinel', // Replace with actual field ID from your Google Form
+            'cityFieldId': 'entry.2132475902_sentinel', // Replace with actual field ID from your Google Form
+            'stateFieldId': 'entry.474494225_sentinel', // Replace with actual field ID from your Google Form
+            'countryFieldId': 'entry.472727457_sentinel', // Replace with actual field ID from your Google Form
+            'zipFieldId': 'entry.901234567' // Replace with actual field ID from your Google Form
+        };
+
+        document.querySelectorAll('script[type="IN/Form2"]').forEach(script => {
+            Object.keys(fieldMapping).forEach(key => {
+                const fieldId = script.getAttribute(`data-field-${key}`);
+                if (fieldId) {
+                    const iframe = document.getElementById('googleFormFrame');
+                    iframe.onload = function () {
+                        const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+                        const input = iframeDocument.querySelector(`input[name="${fieldMapping[key]}"]`);
+                        if (input) {
+                            input.id = fieldId;  // Set the ID of the input field inside the iframe to match LinkedIn AutoFill requirements
+                        }
+                    };
+                }
+            });
+        });
+    </script>
+</body>
+</html>
